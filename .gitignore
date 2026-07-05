@@ -1,0 +1,10 @@
+.DS_Store
+*.zip
+*.log
+.env
+.env.*
+
+# Local prototype leftovers from before the exact zip export.
+assets/
+css/
+js/

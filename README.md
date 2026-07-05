@@ -2,6 +2,10 @@
 
 Cadence is an original arcade-style typing test app for measuring typing speed, accuracy, and consistency in the browser. It is built as a static web app, so it can run from a simple HTML file or any static hosting provider.
 
+## Live App
+
+https://parzival92.github.io/cadence/
+
 ## What It Does
 
 Cadence gives users a focused typing test with real-time feedback and a results screen at the end of each run.

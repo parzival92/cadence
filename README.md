@@ -121,6 +121,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 │   └── QA.md
 ├── .nojekyll
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
@@ -151,4 +152,4 @@ Planned improvements:
 
 ## License
 
-No license has been selected yet.
+MIT — see [LICENSE](LICENSE).

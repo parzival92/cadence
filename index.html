@@ -405,9 +405,14 @@ class Component extends DCLogic {
 
   handleChange = (e) => {
     this.startTimerIfNeeded();
-    const val = e.target.value;
+    // Mobile keyboards deliver Enter through the input event (keydown fires
+    // as "Unidentified"), so newlines never reach handleKeyDown.
+    const val = e.target.value.replace(/[\r\n]/g, '');
     const prev = this.state.currentInput;
-    if (val === prev) return;
+    if (val === prev) {
+      if (e.target.value !== val) e.target.value = val;
+      return;
+    }
     // Mobile keyboard suggestions, swipe typing, and paste insert whole
     // words in one event; only single-char appends and deletions count.
     const isDelete = val.length < prev.length && prev.startsWith(val);
@@ -417,7 +422,15 @@ class Component extends DCLogic {
       return;
     }
     if (val.endsWith(' ')) {
-      this.setState({ currentInput: val.trimEnd() }, () => this.commitWord());
+      const trimmed = val.trimEnd();
+      if (!trimmed) {
+        // Space on an empty word: state stays '', so the controlled value
+        // won't re-sync; clear manually or the stray space breaks the
+        // append guard on the next keystroke.
+        e.target.value = '';
+        return;
+      }
+      this.setState({ currentInput: trimmed }, () => this.commitWord());
       return;
     }
     const target = this.state.words[this.state.currentWordIndex] || '';
@@ -531,7 +544,7 @@ class Component extends DCLogic {
 
     const mainWrapStyle = `flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:34px 24px 50px;`;
 
-    const boardStyle = `display:flex; justify-content:space-between; align-items:flex-start; gap:24px; background:${colors.panel}; border:1px solid ${colors.hairline}; border-radius:14px; padding:${narrow ? '18px 20px' : '26px 34px'}; box-shadow:inset 0 2px 18px oklch(8% 0.01 270);`;
+    const boardStyle = `display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; background:${colors.panel}; border:1px solid ${colors.hairline}; border-radius:14px; padding:${narrow ? '18px 20px' : '26px 34px'}; box-shadow:inset 0 2px 18px oklch(8% 0.01 270);`;
 
     const boardLabelStyle = `font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:${colors.dimText};`;
 
@@ -644,7 +657,19 @@ class Component extends DCLogic {
     // history bars
     const historyBars = [];
     if (s.finalStats) {
-      const hist = s.history.length ? s.history : [{ wpm: s.finalStats.wpm }];
+      let hist = s.history.length ? s.history : [{ wpm: s.finalStats.wpm }];
+      // One bar per second overflows the row on long runs (the 5px gaps
+      // alone exceed narrow viewports); bucket down to a fixed bar budget.
+      const maxBars = 40;
+      if (hist.length > maxBars) {
+        const bucket = Math.ceil(hist.length / maxBars);
+        const condensed = [];
+        for (let i = 0; i < hist.length; i += bucket) {
+          const slice = hist.slice(i, i + bucket);
+          condensed.push({ wpm: Math.round(slice.reduce((a, h) => a + h.wpm, 0) / slice.length) });
+        }
+        hist = condensed;
+      }
       const maxWpm = Math.max(...hist.map(h => h.wpm), 10);
       hist.forEach(h => {
         const pct = Math.max(4, Math.round((h.wpm / maxWpm) * 100));

@@ -139,6 +139,7 @@
             onBlur="{{ handleBlur }}"
             autoCapitalize="off"
             autoCorrect="off"
+            autoComplete="off"
             spellCheck="false"
             style="{{ hiddenInputStyle }}"
           ></textarea>
@@ -405,13 +406,22 @@ class Component extends DCLogic {
   handleChange = (e) => {
     this.startTimerIfNeeded();
     const val = e.target.value;
+    const prev = this.state.currentInput;
+    if (val === prev) return;
+    // Mobile keyboard suggestions, swipe typing, and paste insert whole
+    // words in one event; only single-char appends and deletions count.
+    const isDelete = val.length < prev.length && prev.startsWith(val);
+    const isAppend = val.length === prev.length + 1 && val.startsWith(prev);
+    if (!isDelete && !isAppend) {
+      e.target.value = prev;
+      return;
+    }
     if (val.endsWith(' ')) {
       this.setState({ currentInput: val.trimEnd() }, () => this.commitWord());
       return;
     }
     const target = this.state.words[this.state.currentWordIndex] || '';
-    const prevLen = this.state.currentInput.length;
-    if (val.length > prevLen) {
+    if (val.length > prev.length) {
       const idx = val.length - 1;
       const isCorrect = idx < target.length && val[idx] === target[idx];
       this.setState(s => ({

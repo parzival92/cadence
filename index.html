@@ -278,12 +278,23 @@ class Component extends DCLogic {
     this.generateWords();
     this.onResize = () => this.setState({ vw: window.innerWidth });
     window.addEventListener('resize', this.onResize);
+    // Escape must restart even when the hidden textarea is not focused —
+    // the results screen unmounts it, so its own keydown handler is gone.
+    // When the textarea is focused, its handler runs and this one skips.
+    this.onWindowKeyDown = (e) => {
+      if (e.key === 'Escape' && document.activeElement !== this.inputRef.current) {
+        e.preventDefault();
+        this.resetTest();
+      }
+    };
+    window.addEventListener('keydown', this.onWindowKeyDown);
     this.setState({ vw: window.innerWidth });
   }
 
   componentWillUnmount() {
     if (this.timerHandle) clearInterval(this.timerHandle);
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onWindowKeyDown);
   }
 
   generateWords(count) {
@@ -320,6 +331,18 @@ class Component extends DCLogic {
   focusInput = () => {
     if (this.inputRef.current) this.inputRef.current.focus();
   };
+
+  // Focus the hidden input once it is (re)mounted. A single deferred
+  // focus() misses when the run finishes: the results screen unmounted the
+  // textarea, and PLAY AGAIN's re-render may not have attached the new one
+  // yet — so retry briefly until focus actually sticks.
+  focusSoon(attempt = 0) {
+    const el = this.inputRef.current;
+    if (el && el.isConnected) el.focus();
+    if (document.activeElement !== this.inputRef.current && attempt < 20) {
+      setTimeout(() => this.focusSoon(attempt + 1), 50);
+    }
+  }
 
   handleFocus = () => this.setState({ focused: true });
   handleBlur = () => this.setState({ focused: false });
@@ -476,7 +499,7 @@ class Component extends DCLogic {
       lineStart: 0,
     });
     this.generateWords();
-    setTimeout(() => this.focusInput(), 50);
+    this.focusSoon();
   };
 
   buildDigits(str, cell, gap, onColor, offColor, glow) {

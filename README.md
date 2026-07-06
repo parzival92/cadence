@@ -141,7 +141,7 @@ The immediate goal is to make Cadence a reliable public typing-test app with a p
 
 Planned improvements:
 
-- Decide quote mode scope for v1
+- Quote mode (deferred from v1; see issue #11 for scope guardrails)
 
 ## Documentation
 

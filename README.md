@@ -145,7 +145,8 @@ Planned improvements:
 
 ## Documentation
 
-- Product requirements: [docs/PRD.md](docs/PRD.md)
+- Product requirements (v1): [docs/PRD.md](docs/PRD.md)
+- Post-v1 direction (draft): [docs/PRD-v2.md](docs/PRD-v2.md)
 - Launch QA workflow: [docs/QA.md](docs/QA.md)
 
 ## License

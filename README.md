@@ -63,13 +63,17 @@ No build step is required. React and ReactDOM are vendored in `vendor/`, so the 
 
 ## Run Tests
 
-Scoring rules live in `src/scoring.js` and are covered by unit tests. With Node.js 18+ installed:
+Scoring, word generation, and personal-best rules live in `src/` and are covered by unit tests, alongside launch smoke tests that verify the vendored runtime and page wiring. With Node.js 18+ installed:
 
 ```bash
 node --test
 ```
 
-No test dependencies are required; the suite uses Node's built-in test runner.
+No test dependencies are required; the suite uses Node's built-in test runner. The same suite runs in CI on every push and pull request.
+
+## QA
+
+The launch QA workflow — automated checks plus the manual browser checklist for desktop and mobile — is documented in [docs/QA.md](docs/QA.md). `qa-harness.html` shows the app at common mobile widths side by side.
 
 ## Deploy
 
@@ -91,6 +95,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 .
 ├── index.html
 ├── support.js
+├── qa-harness.html
 ├── src/
 │   ├── scoring.js
 │   ├── words.js
@@ -98,7 +103,11 @@ For GitHub Pages, publish the `main` branch from the repository root.
 ├── tests/
 │   ├── scoring.test.js
 │   ├── words.test.js
-│   └── personalbest.test.js
+│   ├── personalbest.test.js
+│   └── smoke.test.js
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── assets/
 │   ├── preview.png
 │   ├── favicon.svg
@@ -108,7 +117,8 @@ For GitHub Pages, publish the `main` branch from the repository root.
 │   ├── react.production.min.js
 │   └── react-dom.production.min.js
 ├── docs/
-│   └── PRD.md
+│   ├── PRD.md
+│   └── QA.md
 ├── .nojekyll
 ├── .gitignore
 └── README.md
@@ -131,14 +141,12 @@ The immediate goal is to make Cadence a reliable public typing-test app with a p
 
 Planned improvements:
 
-- Add browser QA coverage
-- Add stronger mobile QA
+- Decide quote mode scope for v1
 
 ## Documentation
 
-The product requirements document is available at:
-
-[docs/PRD.md](docs/PRD.md)
+- Product requirements: [docs/PRD.md](docs/PRD.md)
+- Launch QA workflow: [docs/QA.md](docs/QA.md)
 
 ## License
 

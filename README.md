@@ -58,6 +58,16 @@ open index.html
 
 No build step is required.
 
+## Run Tests
+
+Scoring rules live in `src/scoring.js` and are covered by unit tests. With Node.js 18+ installed:
+
+```bash
+node --test
+```
+
+No test dependencies are required; the suite uses Node's built-in test runner.
+
 ## Deploy
 
 Cadence is a static site. It can be deployed from the repository root.
@@ -78,6 +88,10 @@ For GitHub Pages, publish the `main` branch from the repository root.
 .
 ├── index.html
 ├── support.js
+├── src/
+│   └── scoring.js
+├── tests/
+│   └── scoring.test.js
 ├── uploads/
 │   └── pasted-1783285593538-0.png
 ├── docs/
@@ -92,6 +106,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - The app currently ships as a static browser app.
 - The UI and interaction logic are contained in `index.html`.
 - Runtime support code is contained in `support.js`.
+- Scoring rules are isolated in `src/scoring.js` (browser global `CadenceScoring`, CommonJS for tests). The UI in `index.html` still carries its own copy of these rules; wiring it to the module is tracked separately.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
 - The current runtime loads React, ReactDOM, and Babel from `unpkg.com`.
 
@@ -106,7 +121,6 @@ Planned improvements:
 - Add browser QA coverage
 - Add a project preview image
 - Improve README screenshots and metadata
-- Extract scoring logic into a testable module
 - Extract word generation into a testable module
 - Add local personal-best tracking
 - Add stronger mobile QA

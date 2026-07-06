@@ -56,7 +56,7 @@ Open `index.html` in a browser.
 open index.html
 ```
 
-No build step is required.
+No build step is required. React and ReactDOM are vendored in `vendor/`, so the app boots fully offline — no CDN access needed. (The Google Fonts stylesheet is still fetched when online; the app falls back to the system monospace font without it.)
 
 ## Deploy
 
@@ -78,6 +78,9 @@ For GitHub Pages, publish the `main` branch from the repository root.
 .
 ├── index.html
 ├── support.js
+├── vendor/
+│   ├── react.production.min.js
+│   └── react-dom.production.min.js
 ├── uploads/
 │   └── pasted-1783285593538-0.png
 ├── docs/
@@ -93,7 +96,8 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - The UI and interaction logic are contained in `index.html`.
 - Runtime support code is contained in `support.js`.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
-- The current runtime loads React, ReactDOM, and Babel from `unpkg.com`.
+- React and ReactDOM (18.3.1 UMD builds) are vendored in `vendor/` and loaded before `support.js`, which skips its `unpkg.com` fallback when they are already present. The vendored files match the SRI hashes pinned in `support.js`.
+- Babel is only fetched by the runtime for external JSX imports (`x-import`), which Cadence does not use, so it is never loaded.
 
 ## Product Direction
 
@@ -101,7 +105,6 @@ The immediate goal is to make Cadence a reliable public typing-test app with a p
 
 Planned improvements:
 
-- Vendor runtime dependencies locally
 - Add a live deployment URL
 - Add browser QA coverage
 - Add a project preview image

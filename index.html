@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Vendored React (matches the versions pinned in support.js); loading them
+     first makes the runtime skip its unpkg.com fallback, so the app boots
+     with no CDN access. -->
+<script src="./vendor/react.production.min.js"></script>
+<script src="./vendor/react-dom.production.min.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>

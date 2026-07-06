@@ -5,6 +5,7 @@
 .env.*
 
 # Local prototype leftovers from before the exact zip export.
-assets/
+# (assets/ now holds tracked launch assets; only the leftover file is ignored.)
+assets/cadence-halftone.png
 css/
 js/

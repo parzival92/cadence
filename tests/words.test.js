@@ -14,11 +14,12 @@ const scriptedRng = (values) => {
   };
 };
 
-test('word lists match the inline copies in index.html', () => {
+test('index.html loads the modules and carries no inline copies', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  const grab = (name) => JSON.parse(html.match(new RegExp('const ' + name + ' = (\\[.*?\\]);'))[1].replace(/'/g, '"'));
-  assert.deepEqual(WORD_LIST, grab('WORD_LIST'));
-  assert.deepEqual(HARD_WORDS, grab('HARD_WORDS'));
+  assert.ok(html.includes('src="./src/words.js"'), 'words module script tag missing');
+  assert.ok(html.includes('src="./src/scoring.js"'), 'scoring module script tag missing');
+  assert.ok(!html.includes('const WORD_LIST'), 'inline WORD_LIST should be gone');
+  assert.ok(!html.includes('const HARD_WORDS'), 'inline HARD_WORDS should be gone');
 });
 
 test('generates the requested number of tokens for every mode length', () => {

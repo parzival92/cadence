@@ -89,9 +89,11 @@ For GitHub Pages, publish the `main` branch from the repository root.
 ├── index.html
 ├── support.js
 ├── src/
-│   └── scoring.js
+│   ├── scoring.js
+│   └── words.js
 ├── tests/
-│   └── scoring.test.js
+│   ├── scoring.test.js
+│   └── words.test.js
 ├── uploads/
 │   └── pasted-1783285593538-0.png
 ├── docs/
@@ -106,7 +108,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - The app currently ships as a static browser app.
 - The UI and interaction logic are contained in `index.html`.
 - Runtime support code is contained in `support.js`.
-- Scoring rules are isolated in `src/scoring.js` (browser global `CadenceScoring`, CommonJS for tests). The UI in `index.html` still carries its own copy of these rules; wiring it to the module is tracked separately.
+- Scoring rules live in `src/scoring.js` and word generation in `src/words.js` (browser globals `CadenceScoring` / `CadenceWords`, CommonJS for tests). The UI in `index.html` uses these modules directly; there are no inline copies.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
 - React and ReactDOM (18.3.1 UMD builds) are vendored in `vendor/` and loaded before `support.js`, which skips its `unpkg.com` fallback when they are already present. The vendored files match the SRI hashes pinned in `support.js`.
 - Babel is only fetched by the runtime for external JSX imports (`x-import`), which Cadence does not use, so it is never loaded.

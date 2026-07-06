@@ -2,6 +2,8 @@
 
 Cadence is an original arcade-style typing test app for measuring typing speed, accuracy, and consistency in the browser. It is built as a static web app, so it can run from a simple HTML file or any static hosting provider.
 
+![Cadence — arcade typing test](assets/preview.png)
+
 ## Live App
 
 https://parzival92.github.io/cadence/
@@ -97,8 +99,14 @@ For GitHub Pages, publish the `main` branch from the repository root.
 │   ├── scoring.test.js
 │   ├── words.test.js
 │   └── personalbest.test.js
-├── uploads/
-│   └── pasted-1783285593538-0.png
+├── assets/
+│   ├── preview.png
+│   ├── favicon.svg
+│   ├── favicon-32.png
+│   └── apple-touch-icon.png
+├── vendor/
+│   ├── react.production.min.js
+│   └── react-dom.production.min.js
 ├── docs/
 │   └── PRD.md
 ├── .nojekyll
@@ -113,6 +121,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - Runtime support code is contained in `support.js`.
 - Scoring rules live in `src/scoring.js`, word generation in `src/words.js`, and personal-best persistence in `src/personalbest.js` (localStorage key `cadence.pb.v1`). Each loads as a browser global (`CadenceScoring` / `CadenceWords` / `CadencePB`) or CommonJS for tests. The UI in `index.html` uses these modules directly; there are no inline copies.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
+- Launch metadata (title, description, Open Graph, and Twitter card tags) lives in the static `<head>` of `index.html` so crawlers and link previews see it without running JavaScript. Favicon and preview assets live in `assets/`.
 - React and ReactDOM (18.3.1 UMD builds) are vendored in `vendor/` and loaded before `support.js`, which skips its `unpkg.com` fallback when they are already present. The vendored files match the SRI hashes pinned in `support.js`.
 - Babel is only fetched by the runtime for external JSX imports (`x-import`), which Cadence does not use, so it is never loaded.
 
@@ -122,11 +131,7 @@ The immediate goal is to make Cadence a reliable public typing-test app with a p
 
 Planned improvements:
 
-- Add a live deployment URL
 - Add browser QA coverage
-- Add a project preview image
-- Improve README screenshots and metadata
-- Extract word generation into a testable module
 - Add stronger mobile QA
 
 ## Documentation

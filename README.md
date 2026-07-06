@@ -20,6 +20,7 @@ Core functionality:
 - Progress counter
 - Character-level feedback while typing
 - Restart and replay flow
+- Local personal-best tracking per mode, length, and difficulty (stored in the browser, no accounts)
 - Final result summary
 - Raw WPM and net WPM
 - Accuracy percentage
@@ -90,10 +91,12 @@ For GitHub Pages, publish the `main` branch from the repository root.
 ├── support.js
 ├── src/
 │   ├── scoring.js
-│   └── words.js
+│   ├── words.js
+│   └── personalbest.js
 ├── tests/
 │   ├── scoring.test.js
-│   └── words.test.js
+│   ├── words.test.js
+│   └── personalbest.test.js
 ├── uploads/
 │   └── pasted-1783285593538-0.png
 ├── docs/
@@ -108,7 +111,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - The app currently ships as a static browser app.
 - The UI and interaction logic are contained in `index.html`.
 - Runtime support code is contained in `support.js`.
-- Scoring rules live in `src/scoring.js` and word generation in `src/words.js` (browser globals `CadenceScoring` / `CadenceWords`, CommonJS for tests). The UI in `index.html` uses these modules directly; there are no inline copies.
+- Scoring rules live in `src/scoring.js`, word generation in `src/words.js`, and personal-best persistence in `src/personalbest.js` (localStorage key `cadence.pb.v1`). Each loads as a browser global (`CadenceScoring` / `CadenceWords` / `CadencePB`) or CommonJS for tests. The UI in `index.html` uses these modules directly; there are no inline copies.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
 - React and ReactDOM (18.3.1 UMD builds) are vendored in `vendor/` and loaded before `support.js`, which skips its `unpkg.com` fallback when they are already present. The vendored files match the SRI hashes pinned in `support.js`.
 - Babel is only fetched by the runtime for external JSX imports (`x-import`), which Cadence does not use, so it is never loaded.
@@ -124,7 +127,6 @@ Planned improvements:
 - Add a project preview image
 - Improve README screenshots and metadata
 - Extract word generation into a testable module
-- Add local personal-best tracking
 - Add stronger mobile QA
 
 ## Documentation

@@ -10,6 +10,7 @@
 <script src="./vendor/react-dom.production.min.js"></script>
 <script src="./src/scoring.js"></script>
 <script src="./src/words.js"></script>
+<script src="./src/personalbest.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -163,6 +164,10 @@
       <div style="width:100%; max-width:1000px; display:flex; flex-direction:column; gap:36px; align-items:center; animation:fadeUp 0.5s ease;">
         <div style="{{ hintTextStyle }}">final score — net words per minute</div>
 
+        <sc-if value="{{ isNewBest }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ newBestStyle }}">★ NEW PERSONAL BEST ★</div>
+        </sc-if>
+
         <div style="{{ digitRowBigStyle }}">
           <sc-for list="{{ finalDigits }}" as="d" hint-placeholder-count="3">
             <div style="{{ d.gridStyle }}">
@@ -190,6 +195,10 @@
           <span style="color:{{ colors.dimLed }};">|</span>
           <span>{{ finalStats.time }}S</span>
         </div>
+
+        <sc-if value="{{ showPrevBest }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ hintTextStyle }}">personal best — {{ prevBestWpm }} wpm</div>
+        </sc-if>
 
         <div style="{{ restartBtnStyle }}" onClick="{{ resetTest }}">PLAY AGAIN</div>
       </div>
@@ -421,7 +430,13 @@ class Component extends DCLogic {
     }
     const stats = CadenceScoring.scoreTest(scored, elapsedSec);
     const modeLabel = (this.state.level.toUpperCase() + ' · ') + (this.state.mode === 'time' ? (this.state.timeOption + 'S') : (this.state.wordsOption + ' WORDS'));
-    this.setState({ status: 'finished', finalStats: { ...stats, modeLabel } });
+    const cfg = {
+      mode: this.state.mode,
+      option: this.state.mode === 'time' ? this.state.timeOption : this.state.wordsOption,
+      level: this.state.level,
+    };
+    const pb = CadencePB.record(window.localStorage, cfg, stats);
+    this.setState({ status: 'finished', finalStats: { ...stats, modeLabel, best: pb.best, isNewBest: pb.isNew } });
   }
 
   resetTest = () => {
@@ -521,6 +536,8 @@ class Component extends DCLogic {
     const ledBarsRowStyle = `display:flex; align-items:flex-end; gap:5px; height:110px; width:100%; max-width:640px; border-bottom:1px solid ${colors.faint}; padding-bottom:1px;`;
 
     const statLineStyle = `display:flex; gap:14px; flex-wrap:wrap; justify-content:center; font-size:13px; letter-spacing:0.06em; color:${colors.amberBright};`;
+
+    const newBestStyle = `font-size:14px; font-weight:800; letter-spacing:0.24em; color:${colors.amberBright}; text-shadow:0 0 16px ${colors.amber}; animation:ledPulse 1.3s ease infinite;`;
 
     const footerStyle = `text-align:center; font-size:9.5px; letter-spacing:0.2em; color:${colors.dimText}; padding:14px 20px 22px; border-top:1px solid ${colors.hairline};`;
 
@@ -647,7 +664,10 @@ class Component extends DCLogic {
       boardStyle, boardLabelStyle, digitRowStyle, digitRowBigStyle,
       typingZoneStyle, lineWrapStyle, currentLineStyle, nextLineStyle, nextLineWords, focusOverlayStyle, focusHintStyle,
       hiddenInputStyle, caretStyle, underRowStyle, restartBtnStyle, hintTextStyle,
-      ledBarsRowStyle, statLineStyle, footerStyle,
+      ledBarsRowStyle, statLineStyle, footerStyle, newBestStyle,
+      isNewBest: !!(s.finalStats && s.finalStats.isNewBest),
+      showPrevBest: !!(s.finalStats && !s.finalStats.isNewBest && s.finalStats.best),
+      prevBestWpm: s.finalStats && s.finalStats.best ? s.finalStats.best.wpm : 0,
       counterDigits, accDigits, wpmDigits, finalDigits, counterCaption,
       timePillStyle: pill(s.mode === 'time'),
       wordsPillStyle: pill(s.mode === 'words'),

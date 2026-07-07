@@ -150,6 +150,10 @@ Planned improvements:
 - Post-v1 direction (draft): [docs/PRD-v2.md](docs/PRD-v2.md)
 - Launch QA workflow: [docs/QA.md](docs/QA.md)
 
+## Support
+
+Cadence is free and open source, built with love. If you enjoy it, consider [starring the repo on GitHub](https://github.com/parzival92/cadence) — it helps others discover the project.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

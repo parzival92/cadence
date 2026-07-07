@@ -21,6 +21,7 @@ Core functionality:
 - Live accuracy display
 - Progress counter
 - Character-level feedback while typing
+- Light and dark themes (follows the OS preference, toggleable in the header)
 - Restart and replay flow
 - Local personal-best tracking per mode, length, and difficulty (stored in the browser, no accounts)
 - Final result summary
@@ -130,7 +131,7 @@ For GitHub Pages, publish the `main` branch from the repository root.
 - The app currently ships as a static browser app.
 - The UI and interaction logic are contained in `index.html`.
 - Runtime support code is contained in `support.js`.
-- Scoring rules live in `src/scoring.js`, word generation in `src/words.js`, and personal-best persistence in `src/personalbest.js` (localStorage key `cadence.pb.v1`). Each loads as a browser global (`CadenceScoring` / `CadenceWords` / `CadencePB`) or CommonJS for tests. The UI in `index.html` uses these modules directly; there are no inline copies.
+- Scoring rules live in `src/scoring.js`, word generation in `src/words.js`, and personal-best persistence in `src/personalbest.js` (localStorage key `cadence.pb.v1`; the theme choice persists under `cadence.theme`). Each loads as a browser global (`CadenceScoring` / `CadenceWords` / `CadencePB`) or CommonJS for tests. The UI in `index.html` uses these modules directly; there are no inline copies.
 - `.nojekyll` is included so GitHub Pages serves all static files directly.
 - Launch metadata (title, description, Open Graph, and Twitter card tags) lives in the static `<head>` of `index.html` so crawlers and link previews see it without running JavaScript. Favicon and preview assets live in `assets/`.
 - React and ReactDOM (18.3.1 UMD builds) are vendored in `vendor/` and loaded before `support.js`, which skips its `unpkg.com` fallback when they are already present. The vendored files match the SRI hashes pinned in `support.js`.

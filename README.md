@@ -21,7 +21,7 @@ Core functionality:
 - Live accuracy display
 - Progress counter
 - Character-level feedback while typing
-- Light and dark themes (follows the OS preference, toggleable in the header)
+- Light and dark themes (dark by default, toggleable in the header)
 - Restart and replay flow
 - Local personal-best tracking per mode, length, and difficulty (stored in the browser, no accounts)
 - Final result summary

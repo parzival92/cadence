@@ -42,5 +42,5 @@ Gotchas learned the hard way:
 - Idle screen renders (header pills, LED board, footer)
 - Type a few words: live WPM/accuracy digits, error coloring, caret
 - Finish a 10-word run: results screen, history bars, personal best
-- Theme: OS-pref default, header LIGHT/DARK toggle, persistence in
+- Theme: dark default, header LIGHT/DARK toggle, persistence in
   `localStorage['cadence.theme']`, `<meta name="theme-color">` sync

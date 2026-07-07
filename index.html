@@ -259,6 +259,9 @@ const DIGITS = {
 // one. "Bright" means more emphasis, which on a light background is darker,
 // not lighter. Glows that read as light bloom on dark backgrounds turn into
 // gray smudges on light ones, so light-mode glow/barGlow carry low alpha.
+// The light accent is indigo, not a darkened amber: any dark orange sits next
+// to the error red in hue, making accents and mistakes read as related. The
+// "amber" key names the accent role, whatever hue the palette assigns it.
 const PALETTES = {
   dark: {
     bg: 'oklch(14% 0.012 270)',
@@ -280,8 +283,8 @@ const PALETTES = {
   light: {
     bg: 'oklch(96% 0.01 85)',
     panel: 'oklch(99% 0.005 85)',
-    amber: 'oklch(55% 0.14 60)',
-    amberBright: 'oklch(47% 0.15 55)',
+    amber: 'oklch(45% 0.17 270)',
+    amberBright: 'oklch(38% 0.19 270)',
     dimLed: 'oklch(90% 0.015 80)',
     dimText: 'oklch(50% 0.02 70)',
     faint: 'oklch(76% 0.02 75)',
@@ -290,8 +293,8 @@ const PALETTES = {
     texture: 'oklch(88% 0.015 80 / 0.5)',
     inset: 'oklch(88% 0.01 85)',
     overlay: 'oklch(96% 0.01 85 / 0.82)',
-    glow: 'oklch(55% 0.14 60 / 0.35)',
-    barGlow: 'oklch(55% 0.14 60 / 0.2)',
+    glow: 'oklch(45% 0.17 270 / 0.35)',
+    barGlow: 'oklch(45% 0.17 270 / 0.2)',
     themeColor: '#f6f2ea',
   },
 };

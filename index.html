@@ -226,7 +226,10 @@
 
   </div>
 
-  <div style="{{ footerStyle }}">WPM = CORRECT CHARS ÷ 5 ÷ MIN · INTERNATIONAL STANDARD</div>
+  <div style="{{ footerStyle }}">
+    <div>WPM = CORRECT CHARS ÷ 5 ÷ MIN · INTERNATIONAL STANDARD</div>
+    <div style="margin-top:6px;">MADE WITH ♥ · <a href="https://github.com/parzival92/cadence" target="_blank" rel="noopener" style="{{ footerLinkStyle }}">STAR CADENCE ON GITHUB ★</a></div>
+  </div>
 
 </div>
 
@@ -584,6 +587,8 @@ class Component extends DCLogic {
 
     const footerStyle = `text-align:center; font-size:9.5px; letter-spacing:0.2em; color:${colors.dimText}; padding:14px 20px 22px; border-top:1px solid ${colors.hairline};`;
 
+    const footerLinkStyle = `color:${colors.amber}; text-decoration:underline; text-underline-offset:3px;`;
+
     // digits
     const cellSm = narrow ? 4 : 6;
     const cellBig = narrow ? 9 : 14;
@@ -707,7 +712,7 @@ class Component extends DCLogic {
       boardStyle, boardLabelStyle, digitRowStyle, digitRowBigStyle,
       typingZoneStyle, lineWrapStyle, currentLineStyle, nextLineStyle, nextLineWords, focusOverlayStyle, focusHintStyle,
       hiddenInputStyle, caretStyle, underRowStyle, restartBtnStyle, hintTextStyle,
-      ledBarsRowStyle, statLineStyle, footerStyle, newBestStyle,
+      ledBarsRowStyle, statLineStyle, footerStyle, footerLinkStyle, newBestStyle,
       isNewBest: !!(s.finalStats && s.finalStats.isNewBest),
       showPrevBest: !!(s.finalStats && !s.finalStats.isNewBest && s.finalStats.best),
       prevBestWpm: s.finalStats && s.finalStats.best ? s.finalStats.best.wpm : 0,
